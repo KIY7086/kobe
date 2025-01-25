@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/mhchem.min.js"></script>
+    <title>科比日历</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        @font-face {
+            font-family: 'KaTeX_Main';
+            src: url('https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/fonts/KaTeX_Main-Regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+    </style>
+    <div id="danmaku-container"></div>
+    <div id="danmaku-mask"></div>
+    <audio id="bgMusic" loop>
+        <source src="music/cuagain.mp3" type="audio/mp3">
+    </audio>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body>
+    <!-- 预加载图片但不显示 -->
+    <div style="display: none;">
+        <img id="img8" src="./images/8.png" alt="8" class="kobe-number">
+        <img id="img24" src="./images/24.png" alt="24" class="kobe-number">
+    </div>
+    
+    <div class="celebration-banner">
+        <div class="celebration-text">
+            <span class="blink">❗️</span>
+            <span>喜</span><span>报</span>
+            <span class="blink">❗️</span>
+        </div>
+        <div class="subtitle">
+            🎯 今日份科比日历新鲜出炉 🎯
+            <div class="random-text"></div>
+        </div>
+        <div class="floating-elements">
+            <span>⛹️‍♂️</span><span>🏆</span><span>🎮</span>
+            <span>🔥</span><span>💫</span><span>✨</span>
+        </div>
+    </div>
+
+    <div class="time-announcement">
+        <span class="time-label">今天是</span>
+        <div class="time-container">
+            <span id="year" class="katex"></span><span class="time-unit">年</span>
+            <span id="month" class="katex"></span><span class="time-unit">月</span>
+            <span id="day" class="katex"></span><span class="time-unit">日</span>
+            <span id="hour" class="katex"></span><span class="time-unit">时</span>
+            <span id="minute" class="katex"></span><span class="time-unit">分</span>
+            <span id="second" class="katex"></span><span class="time-unit">秒</span>
+        </div>
+        <div class="mamba-text">MAMBA MENTALITY</div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
