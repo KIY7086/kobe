@@ -8,6 +8,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/mhchem.min.js"></script>
     <title>科比日历</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/game.css">
     <style>
         @font-face {
             font-family: 'KaTeX_Main';
@@ -19,7 +20,17 @@
     <div id="danmaku-container"></div>
     <div id="danmaku-mask"></div>
     <audio id="bgMusic" loop>
-        <source src="music/cuagain.mp3" type="audio/mp3">
+        <source src="audio/cuagain.mp3" type="audio/mp3">
+    </audio>
+    <!-- 问答游戏音效 -->
+    <audio id="correctSound">
+        <source src="audio/manbaout.mp3" type="audio/mp3">
+    </audio>
+    <audio id="wrongSound1">
+        <source src="audio/man.mp3" type="audio/mp3">
+    </audio>
+    <audio id="wrongSound2">
+        <source src="audio/whatcanisay.mp3" type="audio/mp3">
     </audio>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>

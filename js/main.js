@@ -1,5 +1,6 @@
 import { calc_kobe, calc_kobe_text } from "./calc.js";
 import { initLogoAnimation, initDanmakuAnimation } from './animate.js';
+import { initGames, mambaQuiz } from './game.js';
 
 // 初始化 KOBE_QUOTES
 let KOBE_QUOTES = [];
@@ -12,7 +13,19 @@ const RANDOM_TEXTS = [
     "🐍 曼巴精神永不熄 🐍",
     "🔥 凌晨四点的数学课 🔥",
     "✨ 手感在线，计算准确 💪",
-    "✨ 81分之夜特别版 ✨"
+    "✨ 81分之夜特别版 ✨",
+    "🕊️ 传奇永不落幕，致敬永恒 🕊️",
+    "🌟 你见过凌晨四点的解题过程吗 🌟",
+    "💯 单场81分的数学奇迹 💯",
+    "📐 后仰跳投般优雅的几何 📐",
+    "👑 紫金王朝的数学荣耀 👑",
+    "📚 曼巴学院必修公式 📚",
+    "🖤 为热爱，算到极致 🤍",
+    "🚀 从8号到24号的蜕变之路 🚀",
+    "🏅 MVP赛季的绝对专注 🏅",
+    "💍 五冠王朝的冠军算法 💍",
+    "🎓 名人堂级数学思维 🎓",
+    "🤟 为Gigi拼尽最后一份热爱 🤟"
 ];
 
 const TOAST_MESSAGES = [
@@ -27,7 +40,19 @@ const TOAST_MESSAGES = [
     "🏆 总冠军！",
     "⭐️ All Star",
     "🔥 五冠王朝",
-    "💫 曼巴时刻"
+    "💫 曼巴时刻",
+    "🖤 曼巴永恒",
+    "💍 第五冠！",
+    "🚀 8号起飞",
+    "🏆 湖人荣耀",
+    "💯 得分王！",
+    "📚 Mamba Mentality",
+    "🕯️ 致敬传奇",
+    "🎓 HOF 2020",
+    "📐 绝杀公式",
+    "🤟 为爱而战",
+    "🏀 小飞侠出击",
+    "💥 拒绝妥协"
 ];
 
 const month = document.getElementById("month");
@@ -102,7 +127,7 @@ function updateRandomText() {
 setInterval(updateRandomText, 3000);
 updateRandomText();
 
-// 加载科比名言
+// 修改加载科比名言的部分
 fetch('kobe.txt')
     .then(response => response.text())
     .then(text => {
@@ -117,7 +142,6 @@ fetch('kobe.txt')
                     .trim();
             })
             .filter(quote => quote.length > 0);  // 再次过滤空行
-        initDanmakuAnimation(KOBE_QUOTES);
     })
     .catch(error => {
         console.error('Failed to load kobe.txt:', error);
@@ -129,7 +153,6 @@ fetch('kobe.txt')
             "The moment you give up, is the moment you let someone else win.",
             "Heroes come and go, but legends are forever."
         ];
-        initDanmakuAnimation(KOBE_QUOTES);
     });
 
 // 播放音乐
@@ -201,6 +224,31 @@ function toggleFullScreen() {
     }
 }
 
+// 添加字体自适应函数
+function adjustFontSize() {
+    // 检查是否出现滚动条
+    const hasVerticalScrollbar = document.body.scrollHeight > window.innerHeight;
+    const hasHorizontalScrollbar = document.body.scrollWidth > window.innerWidth;
+    
+    if (hasVerticalScrollbar || hasHorizontalScrollbar) {
+        document.body.classList.add('small-font');
+    } else {
+        document.body.classList.remove('small-font');
+    }
+}
+
+// 在关键时刻调用字体调整
+window.addEventListener('load', adjustFontSize);
+window.addEventListener('resize', adjustFontSize);
+
+// 在显示新内容后也调用字体调整
+function showWithFontAdjust(element) {
+    element.style.display = 'block';
+    requestAnimationFrame(() => {
+        adjustFontSize();
+    });
+}
+
 // 修改创建纪念卡片的函数
 function createMemorialCard() {
     // 创建遮罩
@@ -231,7 +279,60 @@ function createMemorialCard() {
         card.classList.add('memorial-exit');
         overlay.classList.remove('active');
         tryPlayMusic();
-        toggleFullScreen();  // 添加全屏切换
+        toggleFullScreen();
+
+        // 使用分段延迟
+        const calculateDelay = (index) => {
+            if (index <= 2) {
+                // 前两个元素（喜报和时间）快速出现
+                return 800 * index;
+            } else {
+                // 之后的元素慢慢出现
+                return 1600 + (index - 2) * 2000;
+            }
+        };
+
+        // 1. 显示喜报横幅
+        setTimeout(() => {
+            const banner = document.querySelector('.celebration-banner');
+            banner.style.opacity = '0';
+            banner.style.transform = 'translateY(-50px)';
+            showWithFontAdjust(banner);
+            
+            requestAnimationFrame(() => {
+                banner.style.transition = 'all 1.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                banner.style.opacity = '1';
+                banner.style.transform = 'translateY(0)';
+            });
+        }, calculateDelay(1));
+
+        // 2. 显示时间公告
+        setTimeout(() => {
+            const timeAnnouncement = document.querySelector('.time-announcement');
+            timeAnnouncement.style.opacity = '0';
+            timeAnnouncement.style.transform = 'scale(0.8)';
+            showWithFontAdjust(timeAnnouncement);
+            
+            requestAnimationFrame(() => {
+                timeAnnouncement.style.transition = 'all 1.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                timeAnnouncement.style.opacity = '1';
+                timeAnnouncement.style.transform = 'scale(1)';
+            });
+        }, calculateDelay(2));
+
+        // 3. 启动弹幕
+        setTimeout(() => {
+            if (KOBE_QUOTES.length > 0) {  // 确保名言已加载
+                initDanmakuAnimation(KOBE_QUOTES);
+            }
+        }, calculateDelay(3));  // 3600ms
+
+        // 4. 添加护法
+        setTimeout(() => {
+            addGuardians();
+        }, calculateDelay(4));  // 5600ms
+
+        // 移除卡片和遮罩
         setTimeout(() => {
             document.body.removeChild(card);
             document.body.removeChild(overlay);
@@ -250,8 +351,22 @@ function createMemorialCard() {
     card.appendChild(hint);
 }
 
-// 页面加载时显示纪念卡片
-window.addEventListener('load', createMemorialCard);
+// 在页面加载完成后初始化游戏
+window.addEventListener('load', () => {
+    createMemorialCard();
+    initGames();
+});
+
+// 添加点击喜报横幅启动游戏的功能
+document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.querySelector('.celebration-banner');
+    if (banner) {
+        banner.style.cursor = 'pointer';
+        banner.addEventListener('click', () => {
+            mambaQuiz.start();
+        });
+    }
+});
 
 // 添加全屏切换失败的错误处理
 document.addEventListener('fullscreenerror', (event) => {
@@ -300,7 +415,40 @@ kobeElements.forEach(elem => {
     });
 });
 
-// 页面加载完成后启动动画
-window.addEventListener('load', () => {
-    initLogoAnimation();
-});
+// 添加护法元素
+function addGuardians() {
+    // 精简并主题化护法元素
+    const guardianElements = [
+        '🏀', '🐍', '💜', '💛', '🏆', '⛹️‍♂️'  // 只保留最相关的元素
+    ];
+    
+    // 创建左右护法容器
+    const leftGuardian = document.createElement('div');
+    const rightGuardian = document.createElement('div');
+    
+    leftGuardian.className = 'guardian-container left-guardian';
+    rightGuardian.className = 'guardian-container right-guardian';
+    
+    // 减少数量到4个
+    for (let i = 0; i < 4; i++) {
+        const leftElem = document.createElement('div');
+        const rightElem = document.createElement('div');
+        
+        leftElem.className = 'guardian-element';
+        rightElem.className = 'guardian-element';
+        
+        // 不再随机组合，而是有意义的搭配
+        const pairs = ['🏀⛹️‍♂️', '🐍🏆', '💜💛', '🏆🐍'];
+        leftElem.textContent = pairs[i];
+        rightElem.textContent = pairs[i];
+        
+        leftElem.style.animationDelay = `${i * 0.3}s`;  // 更短的延迟
+        rightElem.style.animationDelay = `${i * 0.3}s`;
+        
+        leftGuardian.appendChild(leftElem);
+        rightGuardian.appendChild(rightElem);
+    }
+    
+    document.body.appendChild(leftGuardian);
+    document.body.appendChild(rightGuardian);
+}

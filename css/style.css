@@ -33,11 +33,13 @@ body {
     overflow: hidden;
     animation: gradient-shift 2s ease infinite, 
               card-shake 0.1s linear infinite;
+    display: none;
+    will-change: transform, opacity;
 }
 
 .celebration-text {
     color: #8B0000;
-    font-size: 64px;
+    font-size: 2.67em;
     font-weight: bold;
     text-shadow: 
         0 0 20px #FDB927,
@@ -88,7 +90,7 @@ body {
 }
 
 .subtitle {
-    font-size: 24px;
+    font-size: 1em;
     color: #552583;
     margin-top: 10px;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
@@ -135,7 +137,7 @@ body {
 }
 
 .time-announcement {
-    font-size: 36px;
+    font-size: 1.5em;
     margin: 30px 0;
     padding: 20px;
     background-color: white;
@@ -144,6 +146,8 @@ body {
     position: relative;
     background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
     color: #8B4513;
+    display: none;
+    will-change: transform, opacity;
 }
 
 .kobe-quote {
@@ -316,12 +320,16 @@ body {
     white-space: nowrap;
     color: #552583;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-    animation: danmaku-move 30s linear, glow-text 1s ease-in-out infinite;
+    animation: 
+        danmaku-move 30s linear,
+        danmaku-fade 1s ease-out forwards,
+        glow-text 1s ease-in-out infinite;
     font-size: 32px;
     font-weight: 900;
     will-change: transform;
     transform: translateZ(0);
     letter-spacing: 1px;
+    opacity: 0;
 }
 
 @keyframes danmaku-move {
@@ -545,35 +553,10 @@ body {
     margin-right: 15px;
 }
 
-.lakers-logo {
-    position: fixed;
-    width: 232px;
-    height: 144px;
-    pointer-events: none;
-    z-index: 999999;
-    opacity: 0.6;
-}
-
-@keyframes lakers-float {
-    0% {
-        transform: rotate(0deg) translate(50px) rotate(0deg) scale(1);
-        filter: hue-rotate(0deg);
-    }
-    50% {
-        transform: rotate(180deg) translate(50px) rotate(-180deg) scale(1.2);
-        filter: hue-rotate(180deg);
-    }
-    100% {
-        transform: rotate(360deg) translate(50px) rotate(-360deg) scale(1);
-        filter: hue-rotate(360deg);
-    }
-}
-
 /* 移动端适配 */
 @media screen and (max-width: 768px) {
-    body {
-        font-size: 16px;
-        padding: 10px;
+    body.small-font {
+        font-size: 14px;
     }
 
     .celebration-banner {
@@ -681,6 +664,10 @@ body {
 
 /* 小屏幕设备适配 */
 @media screen and (max-width: 480px) {
+    body.small-font {
+        font-size: 12px;
+    }
+
     .celebration-text {
         font-size: 24px;
         -webkit-text-stroke: 1px red;
@@ -752,4 +739,227 @@ body {
     font-weight: bold;
     text-shadow: 0 0 10px rgba(253, 185, 39, 0.8);
     animation: glow 2s ease-in-out infinite;
+}
+
+.guardian-container {
+    position: fixed;
+    top: 0;
+    width: 150px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    pointer-events: none;
+    z-index: 999;
+}
+
+.left-guardian {
+    left: 30px;
+}
+
+.right-guardian {
+    right: 30px;
+}
+
+.guardian-element {
+    font-size: 48px;
+    animation: 
+        float-guardian 4s ease-in-out infinite,
+        guardian-appear 0.5s ease-out forwards;
+    text-shadow: 
+        0 0 20px #FDB927,
+        0 0 40px #552583,
+        0 0 60px #FDB927;
+    filter: drop-shadow(0 0 15px rgba(85, 37, 131, 0.9));
+    transition: transform 0.3s ease;
+    opacity: 0;
+}
+
+.guardian-element:hover {
+    transform: scale(1.5);
+}
+
+.guardian-element + .guardian-element {
+    margin-top: 20px;
+}
+
+@keyframes float-guardian {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg) scale(1);
+        filter: hue-rotate(0deg) brightness(1);
+    }
+    25% {
+        transform: translateY(-20px) rotate(20deg) scale(1.4);
+        filter: hue-rotate(90deg) brightness(1.2);
+    }
+    50% {
+        transform: translateY(0) rotate(0deg) scale(1);
+        filter: hue-rotate(180deg) brightness(1);
+    }
+    75% {
+        transform: translateY(20px) rotate(-20deg) scale(0.7);
+        filter: hue-rotate(270deg) brightness(0.8);
+    }
+}
+
+@keyframes guardian-appear {
+    from {
+        opacity: 0;
+        transform: translateX(var(--direction)) scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+.left-guardian .guardian-element {
+    --direction: -50px;
+}
+
+.right-guardian .guardian-element {
+    --direction: 50px;
+}
+
+.guardian-element:nth-child(1) { animation-delay: 0s, 0s; }
+.guardian-element:nth-child(2) { animation-delay: 0.2s, 0.2s; }
+.guardian-element:nth-child(3) { animation-delay: 0.4s, 0.4s; }
+.guardian-element:nth-child(4) { animation-delay: 0.6s, 0.6s; }
+.guardian-element:nth-child(5) { animation-delay: 0.8s, 0.8s; }
+.guardian-element:nth-child(6) { animation-delay: 1s, 1s; }
+
+/* 移动端隐藏护法 */
+@media screen and (max-width: 768px) {
+    .guardian-container {
+        display: none;
+    }
+}
+
+@keyframes danmaku-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* 游戏相关样式 */
+.shooting-game {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.basketball {
+    position: absolute;
+    font-size: 40px;
+    cursor: grab;
+    pointer-events: auto;
+    user-select: none;
+    transition: transform 0.1s;
+}
+
+.basketball:active {
+    cursor: grabbing;
+    transform: scale(1.1);
+}
+
+.hoop {
+    position: absolute;
+    font-size: 60px;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.score-popup {
+    position: absolute;
+    font-size: 24px;
+    color: #FDB927;
+    animation: score-float 1s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes score-float {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-50px); opacity: 0; }
+}
+
+.mamba-quiz {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(85, 37, 131, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    color: #FDB927;
+    display: none;
+    z-index: 1000;
+}
+
+.quiz-question {
+    font-size: 1.17em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.quiz-answers {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.quiz-answer {
+    background: #FDB927;
+    color: #552583;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    font-size: 0.75em;
+}
+
+.quiz-answer:hover {
+    transform: scale(1.05);
+}
+
+.quiz-result {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5em;
+    text-shadow: 0 0 10px currentColor;
+}
+
+.quiz-result.correct {
+    color: #00ff00;
+}
+
+.quiz-result.wrong {
+    color: #ff0000;
+}
+
+.result-emoji {
+    font-size: 1.67em;
+}
+
+.result-text {
+    font-size: 1.33em;
+}
+
+.result-explanation {
+    font-size: 0.75em;
+}
+
+.final-score {
+    font-size: 1.33em;
+}
+
+.score-comment {
+    font-size: 1em;
 } 

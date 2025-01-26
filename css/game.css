@@ -1,0 +1,323 @@
+/* 游戏通用样式 */
+.game-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 100000;
+    display: none;
+    cursor: pointer;
+}
+
+/* 问答游戏样式 */
+.mamba-quiz {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #552583 0%, #000000 100%);
+    padding: 30px;
+    border-radius: 15px;
+    color: #FDB927;
+    display: none;
+    z-index: 100001;
+    min-width: 320px;
+    box-shadow: 0 0 30px #FDB927, 0 0 60px #552583;
+    border: 3px solid #FDB927;
+    cursor: default;
+}
+
+.quiz-question {
+    font-size: 28px;
+    margin-bottom: 30px;
+    text-align: center;
+    text-shadow: 0 0 10px #FDB927;
+    font-weight: bold;
+    line-height: 1.4;
+}
+
+.quiz-answers {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.quiz-answer {
+    background: #FDB927;
+    color: #552583;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+.quiz-answer:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 10px rgba(253, 185, 39, 0.3);
+    background: #FFD700;
+}
+
+.quiz-answer:active {
+    transform: scale(0.98);
+    transition: all 0.1s;
+}
+
+.quiz-result {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 36px;
+    text-shadow: 0 0 20px currentColor;
+    font-weight: bold;
+    animation: result-appear 0.5s ease-out;
+    z-index: 100002;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.quiz-result.correct {
+    background: linear-gradient(135deg, #ffffff, #e8fff0);
+    border: 3px solid #00ff00;
+}
+
+.quiz-result.wrong {
+    background: linear-gradient(135deg, #ffffff, #fff0f0);
+    border: 3px solid #ff0000;
+}
+
+/* 动画效果 */
+@keyframes result-appear {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+    .mamba-quiz {
+        width: 85%;
+        padding: 20px;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+
+    .quiz-question {
+        font-size: 1em;
+        margin-bottom: 20px;
+    }
+
+    .quiz-answer {
+        padding: 10px;
+        font-size: 0.9em;
+    }
+
+    .quiz-result {
+        font-size: 1.2em;
+        width: 85%;
+        padding: 15px;
+    }
+    
+    .result-emoji {
+        font-size: 1.4em;
+    }
+    
+    .result-text {
+        font-size: 1.1em;
+    }
+    
+    .result-explanation {
+        font-size: 0.8em;
+    }
+    
+    .final-score {
+        font-size: 1.1em;
+    }
+    
+    .score-comment {
+        font-size: 0.9em;
+    }
+}
+
+/* 小屏幕设备适配 */
+@media screen and (max-width: 480px) {
+    .mamba-quiz {
+        width: 80%;
+        transform: translate(-50%, -50%) scale(0.85);
+        padding: 15px;
+    }
+
+    .quiz-answers {
+        gap: 8px;
+    }
+
+    .quiz-answer {
+        padding: 8px;
+        font-size: 0.8em;
+    }
+
+    .quiz-result {
+        width: 80%;
+        padding: 12px;
+        font-size: 1.1em;
+    }
+    
+    .result-emoji {
+        font-size: 1.2em;
+    }
+    
+    .result-text {
+        font-size: 1em;
+    }
+    
+    .result-explanation {
+        font-size: 0.75em;
+    }
+    
+    .final-score {
+        font-size: 1em;
+    }
+    
+    .score-comment {
+        font-size: 0.8em;
+    }
+}
+
+/* 问答游戏新增样式 */
+.quiz-progress {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: rgba(253, 185, 39, 0.8);
+}
+
+.quiz-score {
+    font-size: 20px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #FDB927;
+    text-shadow: 0 0 10px rgba(253, 185, 39, 0.5);
+}
+
+.result-explanation {
+    font-size: 18px;
+    margin-top: 20px;
+    color: #FDB927;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.final-score {
+    font-size: 32px;
+    margin: 20px 0;
+    color: #FDB927;
+    text-shadow: 0 0 15px rgba(253, 185, 39, 0.8);
+}
+
+.restart-btn {
+    background: #FDB927;
+    color: #552583;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 20px;
+    text-transform: uppercase;
+}
+
+.restart-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 10px rgba(253, 185, 39, 0.3);
+    background: #FFD700;
+}
+
+.restart-btn:active {
+    transform: scale(0.98);
+    transition: all 0.1s;
+}
+
+/* Lakers Logo 层级调整 */
+.lakers-logo {
+    z-index: 99999;
+}
+
+/* 添加新的动画效果 */
+.result-emoji-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.result-emoji {
+    font-size: 40px;
+    display: inline-block;
+    opacity: 0.8;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.score-comment {
+    font-size: 24px;
+    margin-top: 10px;
+    color: #FDB927;
+    text-shadow: 0 0 10px rgba(253, 185, 39, 0.8);
+}
+
+.result-text {
+    font-size: 32px;
+    margin: 10px 0;
+    animation: text-pulse 1s ease-in-out infinite;
+    background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    background-size: 200% 200%;
+}
+
+@keyframes text-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes rainbow-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.celebration-banner {
+    /* ... existing styles ... */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.celebration-banner:hover {
+    transform: scale(1.02);
+} 
