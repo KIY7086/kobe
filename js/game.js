@@ -14,32 +14,66 @@ class MambaQuiz {
         // 添加遮罩层
         this.overlay = document.createElement('div');
         this.overlay.className = 'game-overlay';
+        // 添加名言容器
+        this.quoteContainer = document.createElement('div');
+        this.quoteContainer.className = 'quiz-background-quotes';
+        this.overlay.appendChild(this.quoteContainer);
         document.body.appendChild(this.overlay);
 
         // 获取音效元素
         this.correctSound = document.getElementById('correctSound');
         this.wrongSound1 = document.getElementById('wrongSound1');
         this.wrongSound2 = document.getElementById('wrongSound2');
-
-        // 加载问题
-        this.loadQuestions();
-
-        // 添加遮罩层点击事件
-        this.overlay.addEventListener('click', (e) => {
-            // 只有当点击的是遮罩层本身时才关闭
-            if (e.target === this.overlay) {
-                this.stop();
-            }
-        });
     }
 
-    async loadQuestions() {
+    async loadKobeQuotes() {
         try {
+            const response = await fetch('kobe.txt');
+            const text = await response.text();
+            this.kobeQuotes = text.split('\n')
+                .filter(line => line.trim().length > 0)
+                .map(line => {
+                    return line
+                        .replace(/^\d+[\.\、\s]*/, '')  // 移除开头的数字和分隔符
+                        .replace(/^["'""]/, '')         // 移除开头的引号
+                        .replace(/["'""]$/, '')         // 移除结尾的引号
+                        .trim();
+                });
+        } catch (error) {
+            console.error('Failed to load Kobe quotes:', error);
+            this.kobeQuotes = ["Mamba Mentality"];
+        }
+    }
+
+    async init() {
+        // 创建容器
+        this.container = document.createElement('div');
+        this.container.className = 'mamba-quiz';
+        document.body.appendChild(this.container);
+
+        // 加载所有需要的数据
+        try {
+            // 加载科比名言
+            const quoteResponse = await fetch('kobe.txt');
+            const quoteText = await quoteResponse.text();
+            this.kobeQuotes = quoteText.split('\n')
+                .filter(line => line.trim().length > 0)
+                .map(line => {
+                    return line
+                        .replace(/^\d+[\.\、\s]*/, '')
+                        .replace(/^["'""]/, '')
+                        .replace(/["'""]$/, '')
+                        .trim();
+                });
+
+            // 加载问题
             const response = await fetch('questions.json');
             const data = await response.json();
             this.allQuestions = data.questions;
         } catch (error) {
-            console.error('Failed to load questions:', error);
+            console.error('Failed to load data:', error);
+            this.kobeQuotes = ["Mamba Mentality"];
+            this.allQuestions = [];
         }
     }
 
@@ -51,15 +85,25 @@ class MambaQuiz {
         this.totalQuestions = this.questions.length;
     }
 
-    init() {
-        this.container = document.createElement('div');
-        this.container.className = 'mamba-quiz';
-        document.body.appendChild(this.container);
-    }
-
     showQuestion() {
         const q = this.questions[this.currentQuestion];
+        const randomQuote = this.kobeQuotes ? 
+            this.kobeQuotes[Math.floor(Math.random() * this.kobeQuotes.length)] : 
+            "Mamba Mentality";
+
+        // 检查是否是移动设备
+        const isMobile = window.innerWidth <= 768;
+        const quoteHtml = isMobile ? 
+            `<div class="quiz-quote">
+                <div class="quiz-quote-container">
+                    <span class="quiz-quote-text">${randomQuote}</span>
+                    <span class="quiz-quote-text" aria-hidden="true">${randomQuote}</span>
+                </div>
+            </div>` :
+            `<div class="quiz-quote">${randomQuote}</div>`;
+
         this.container.innerHTML = `
+            ${quoteHtml}
             <div class="quiz-progress">问题 ${this.currentQuestion + 1}/${this.totalQuestions}</div>
             <div class="quiz-score">得分: ${this.score}</div>
             <div class="quiz-question">${q.question}</div>
@@ -69,6 +113,19 @@ class MambaQuiz {
                 `).join('')}
             </div>
         `;
+
+        // 如果是移动设备，计算并设置滚动动画持续时间
+        if (isMobile) {
+            const quoteContainer = this.container.querySelector('.quiz-quote-container');
+            if (quoteContainer) {
+                // 计算基于内容长度的动画持续时间
+                // 使用固定的速度（像素/秒）来确保不同长度的文本滚动速度一致
+                const speed = 60; // 每秒滚动100像素
+                const containerWidth = quoteContainer.offsetWidth;
+                const duration = containerWidth / speed;
+                quoteContainer.style.setProperty('--duration', `${duration}s`);
+            }
+        }
 
         this.container.querySelectorAll('.quiz-answer').forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -176,15 +233,41 @@ class MambaQuiz {
         this.showQuestion();
     }
 
-    start() {
+    async start() {
+        // 确保数据已加载
+        if (!this.allQuestions) {
+            await this.init();
+        }
+        
         this.overlay.style.display = 'block';
         this.container.style.display = 'block';
+        this.showBackgroundQuotes();
         this.restart();
+    }
+
+    showBackgroundQuotes() {
+        // 清空现有名言
+        this.quoteContainer.innerHTML = '';
+        
+        // 随机选择并显示名言
+        const quotes = this.kobeQuotes || [];
+        const selectedQuotes = quotes
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 10);  // 选择10条名言
+        
+        selectedQuotes.forEach((quote, index) => {
+            const quoteElement = document.createElement('div');
+            quoteElement.className = 'background-quote';
+            quoteElement.textContent = quote;
+            quoteElement.style.animationDelay = `${index * 0.5}s`;
+            this.quoteContainer.appendChild(quoteElement);
+        });
     }
 
     stop() {
         this.overlay.style.display = 'none';
         this.container.style.display = 'none';
+        this.quoteContainer.innerHTML = '';  // 清空名言
         this.stopSounds();
         // 重置游戏状态
         this.currentQuestion = 0;

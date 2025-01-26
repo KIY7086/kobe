@@ -962,4 +962,31 @@ body {
 
 .score-comment {
     font-size: 1em;
+}
+
+/* 浮动的动画Logo */
+.floating-logo {
+    width: 232px;
+    height: 144px;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+/* 移动端Logo尺寸调整 */
+@media screen and (max-width: 768px) {
+    .floating-logo {
+        width: 116px;  /* 原尺寸的一半 */
+        height: 72px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .floating-logo {
+        width: 80px;  /* 更小的尺寸 */
+        height: 50px;
+    }
+}
+
+#logo-container {
+    z-index: 999;
 } 

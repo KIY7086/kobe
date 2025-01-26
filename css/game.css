@@ -11,6 +11,7 @@
     z-index: 100000;
     display: none;
     cursor: pointer;
+    overflow: hidden;  /* 防止名言溢出 */
 }
 
 /* 问答游戏样式 */
@@ -152,6 +153,40 @@
     .score-comment {
         font-size: 0.9em;
     }
+
+    .quiz-quote {
+        overflow: hidden;
+        white-space: nowrap;
+        position: relative;
+        padding: 10px;
+        font-size: 16px;
+        width: calc(100% + 2px);  /* 补偿边框宽度 */
+        margin-left: -1px;        /* 对齐边框 */
+        margin-right: -1px;
+    }
+
+    .quiz-quote-text {
+        display: inline-block;
+        animation: none;  /* 先移除动画 */
+        padding-right: 50px;
+    }
+
+    /* 添加动画容器 */
+    .quiz-quote-container {
+        display: inline-block;
+        animation: marquee var(--duration) linear infinite;
+        white-space: nowrap;
+        padding-left: 10px;  /* 添加一些起始间距 */
+    }
+
+    @keyframes marquee {
+        0% {
+            transform: translateX(100%);
+        }
+        100% {
+            transform: translateX(-100%);
+        }
+    }
 }
 
 /* 小屏幕设备适配 */
@@ -195,6 +230,12 @@
     
     .score-comment {
         font-size: 0.8em;
+    }
+
+    .quiz-quote {
+        font-size: 14px;
+        padding: 8px;
+        margin-bottom: 12px;
     }
 }
 
@@ -320,4 +361,68 @@
 
 .celebration-banner:hover {
     transform: scale(1.02);
+}
+
+/* 背景名言样式 */
+.quiz-background-quotes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.background-quote {
+    position: absolute;
+    color: rgba(253, 185, 39, 0.1);  /* Lakers金色 */
+    font-size: 24px;
+    white-space: nowrap;
+    animation: floatQuote 15s linear infinite;
+    opacity: 0;
+}
+
+@keyframes floatQuote {
+    0% {
+        transform: translateX(100vw);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.1;
+    }
+    90% {
+        opacity: 0.1;
+    }
+    100% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+/* 为每个名言设置不同的垂直位置 */
+.background-quote:nth-child(1) { top: 5%; }
+.background-quote:nth-child(2) { top: 15%; }
+.background-quote:nth-child(3) { top: 25%; }
+.background-quote:nth-child(4) { top: 35%; }
+.background-quote:nth-child(5) { top: 45%; }
+.background-quote:nth-child(6) { top: 55%; }
+.background-quote:nth-child(7) { top: 65%; }
+.background-quote:nth-child(8) { top: 75%; }
+.background-quote:nth-child(9) { top: 85%; }
+.background-quote:nth-child(10) { top: 95%; }
+
+/* 问答上方的名言样式 */
+.quiz-quote {
+    font-size: 20px;
+    color: rgba(253, 185, 39, 0.8);
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(253, 185, 39, 0.3);
+    font-style: italic;
+    text-shadow: 0 0 10px rgba(253, 185, 39, 0.3);
+    line-height: 1.4;
+    box-sizing: border-box;
 } 

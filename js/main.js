@@ -322,15 +322,20 @@ function createMemorialCard() {
 
         // 3. 启动弹幕
         setTimeout(() => {
-            if (KOBE_QUOTES.length > 0) {  // 确保名言已加载
+            if (KOBE_QUOTES.length > 0) {
                 initDanmakuAnimation(KOBE_QUOTES);
             }
-        }, calculateDelay(3));  // 3600ms
+        }, calculateDelay(3));
 
         // 4. 添加护法
         setTimeout(() => {
             addGuardians();
-        }, calculateDelay(4));  // 5600ms
+        }, calculateDelay(4));
+
+        // 5. 启动Logo动画
+        setTimeout(() => {
+            initLogoAnimation();
+        }, calculateDelay(5));
 
         // 移除卡片和遮罩
         setTimeout(() => {
