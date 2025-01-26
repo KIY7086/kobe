@@ -102,59 +102,6 @@ function updateRandomText() {
 setInterval(updateRandomText, 3000);
 updateRandomText();
 
-// 添加飞行的科比元素
-const KOBE_IMAGES = [
-    './images/8.png',
-    './images/24.png',
-    '🏀',
-    '🐍',
-    '💜',
-    '💛',
-    '🏆'
-];
-
-function createFlyingKobe() {
-    const kobe = document.createElement('div');
-    kobe.className = 'flying-kobe';
-    
-    // 随机选择显示内容
-    const content = KOBE_IMAGES[Math.floor(Math.random() * KOBE_IMAGES.length)];
-    if (content.endsWith('.png')) {
-        const img = document.createElement('img');
-        img.src = content;
-        kobe.appendChild(img);
-    } else {
-        kobe.style.fontSize = '50px';
-        kobe.textContent = content;
-    }
-    
-    // 随机起始和结束位置
-    const startX = Math.random() * window.innerWidth;
-    const endX = Math.random() * window.innerWidth;
-    const y = Math.random() * (window.innerHeight * 0.6) + window.innerHeight * 0.2;
-    
-    kobe.style.setProperty('--startX', `${startX}px`);
-    kobe.style.setProperty('--endX', `${endX}px`);
-    kobe.style.setProperty('--y', `${y}px`);
-    
-    document.body.appendChild(kobe);
-    
-    kobe.addEventListener('animationend', () => {
-        document.body.removeChild(kobe);
-    });
-}
-
-function scheduleFlyingKobe() {
-    const delay = 500 + Math.random() * 1000;  // 0.5-1.5秒随机间隔
-    setTimeout(() => {
-        createFlyingKobe();
-        scheduleFlyingKobe();
-    }, delay);
-}
-
-// 开始创建飞行的科比元素
-scheduleFlyingKobe();
-
 // 加载科比名言
 fetch('kobe.txt')
     .then(response => response.text())
@@ -218,16 +165,43 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// 计算距离科比逝世的天数
-function getKobeDays() {
+// 计算距离科比逝世的天数和是否整年
+function getKobeTimespan() {
     const kobeDate = new Date('2020-01-26');
     const today = new Date();
     const diffTime = Math.abs(today - kobeDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
+    
+    // 检查是否是周年
+    const isAnniversary = today.getMonth() === kobeDate.getMonth() && 
+                         today.getDate() === kobeDate.getDate() &&
+                         today.getFullYear() > kobeDate.getFullYear();
+    
+    // 如果是周年，计算年数
+    const years = isAnniversary ? today.getFullYear() - kobeDate.getFullYear() : 0;
+    
+    return {
+        days: diffDays,
+        isAnniversary,
+        years
+    };
 }
 
-// 创建纪念日卡片
+// 添加全屏相关函数
+function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+        // 进入全屏
+        if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen();
+        } else if (document.documentElement.webkitRequestFullscreen) { // Safari
+            document.documentElement.webkitRequestFullscreen();
+        } else if (document.documentElement.msRequestFullscreen) { // IE11
+            document.documentElement.msRequestFullscreen();
+        }
+    }
+}
+
+// 修改创建纪念卡片的函数
 function createMemorialCard() {
     // 创建遮罩
     const overlay = document.createElement('div');
@@ -241,36 +215,36 @@ function createMemorialCard() {
 
     const card = document.createElement('div');
     card.className = 'memorial-card';
-    const days = getKobeDays();
+    const timespan = getKobeTimespan();
     card.innerHTML = `
         <div class="memorial-title">💜 永远的曼巴 💛</div>
-        <div class="memorial-days">第 ${days} 天</div>
+        <div class="memorial-days">
+            ${timespan.isAnniversary ? `${timespan.years} 周年` : `第 ${timespan.days} 天`}
+        </div>
         <div class="memorial-text">🐍 Forever Mamba 🐍</div>
         <div class="memorial-date">1978.08.23 - 2020.01.26</div>
     `;
     document.body.appendChild(card);
 
-    // 点击卡片时移除并播放音乐
+    // 修改点击事件处理
     card.addEventListener('click', () => {
         card.classList.add('memorial-exit');
         overlay.classList.remove('active');
         tryPlayMusic();
+        toggleFullScreen();  // 添加全屏切换
         setTimeout(() => {
             document.body.removeChild(card);
             document.body.removeChild(overlay);
         }, 1000);
     });
 
-    // 添加提示文本
+    // 修改提示文本样式
     const hint = document.createElement('div');
     hint.style.cssText = `
-        position: absolute;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
         color: #FDB927;
         font-size: 16px;
         animation: blink 1s infinite;
+        margin-top: 15px;  /* 使用margin-top替代绝对定位 */
     `;
     hint.textContent = '点击卡片开始播放';
     card.appendChild(hint);
@@ -278,6 +252,11 @@ function createMemorialCard() {
 
 // 页面加载时显示纪念卡片
 window.addEventListener('load', createMemorialCard);
+
+// 添加全屏切换失败的错误处理
+document.addEventListener('fullscreenerror', (event) => {
+    console.error('全屏切换失败:', event);
+});
 
 // 科比数字旋转动画
 const kobeElements = document.querySelectorAll('.katex');

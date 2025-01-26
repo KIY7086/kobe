@@ -285,44 +285,6 @@ body {
     50% { transform: scale(1.2); }
 }
 
-.flying-kobe {
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    animation: fly-kobe 4s linear forwards;
-    filter: drop-shadow(0 0 20px gold);
-}
-
-.flying-kobe img {
-    width: 100px;
-    height: 100px;
-    animation: kobe-spin-fast 0.2s linear infinite;
-}
-
-@keyframes fly-kobe {
-    0% {
-        transform: translate(var(--startX), 120vh) rotate(0deg) scale(0.2);
-        opacity: 0;
-    }
-    10% {
-        opacity: 1;
-        transform: translate(var(--startX), var(--y)) rotate(180deg) scale(1);
-    }
-    90% {
-        opacity: 1;
-        transform: translate(var(--endX), var(--y)) rotate(1080deg) scale(1);
-    }
-    100% {
-        transform: translate(var(--endX), -20vh) rotate(1440deg) scale(0.2);
-        opacity: 0;
-    }
-}
-
-@keyframes kobe-spin-fast {
-    from { transform: rotate(0deg) scale(1); }
-    to { transform: rotate(360deg) scale(1.2); }
-}
-
 #danmaku-container {
     position: fixed;
     top: 0;
@@ -567,6 +529,16 @@ body {
 
 .time-container {
     margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.time-row {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    justify-content: center;
 }
 
 .time-unit {
@@ -595,4 +567,189 @@ body {
         transform: rotate(360deg) translate(50px) rotate(-360deg) scale(1);
         filter: hue-rotate(360deg);
     }
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+    body {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    .celebration-banner {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .celebration-text {
+        font-size: 28px;
+        -webkit-text-stroke: 1.5px red;
+    }
+
+    .subtitle {
+        font-size: 18px;
+    }
+
+    .time-announcement {
+        font-size: 24px;
+        margin: 20px 0;
+        padding: 15px;
+    }
+
+    .kobe-quote {
+        font-size: 20px;
+        margin: 20px auto;
+        padding: 15px;
+    }
+
+    .quote-author {
+        font-size: 18px;
+    }
+
+    .number-img {
+        margin: 0 1px;
+    }
+
+    .danmaku {
+        font-size: 24px;
+    }
+
+    .memorial-card {
+        padding: 30px;
+        margin-top: 40px;
+        width: 90%;
+        max-width: 400px;
+    }
+
+    .memorial-title {
+        font-size: 28px;
+        margin-bottom: 15px;
+    }
+
+    .memorial-days {
+        font-size: 42px;
+        margin: 15px 0;
+    }
+
+    .memorial-text {
+        font-size: 22px;
+        line-height: 1.4;
+    }
+
+    .memorial-date {
+        font-size: 16px;
+        margin-top: 15px;
+    }
+
+    .lakers-logo {
+        width: 116px;
+        height: 72px;
+    }
+
+    @keyframes individual-jump {
+        0%, 100% { 
+            transform: translateY(0) scale(1); 
+        }
+        50% { 
+            transform: translateY(-10px) scale(1.1); 
+        }
+    }
+
+    @keyframes mega-pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+
+    .memorial-years {
+        font-size: 18px;
+        margin-top: 8px;
+    }
+
+    .memorial-card .hint {
+        font-size: 14px;
+        margin-top: 12px;
+    }
+
+    .katex {
+        font-size: 0.9em !important;
+    }
+
+    .time-container {
+        gap: 8px;
+    }
+}
+
+/* 小屏幕设备适配 */
+@media screen and (max-width: 480px) {
+    .celebration-text {
+        font-size: 24px;
+        -webkit-text-stroke: 1px red;
+        letter-spacing: 1px;
+    }
+
+    .time-announcement {
+        font-size: 20px;
+    }
+
+    .kobe-quote {
+        font-size: 16px;
+    }
+
+    .memorial-card {
+        padding: 25px;
+        margin-top: 60px;
+        width: 78vw;
+    }
+
+    .memorial-title {
+        font-size: 22px;
+    }
+
+    .memorial-days {
+        font-size: 36px;
+        margin: 12px 0;
+    }
+
+    .memorial-text {
+        font-size: 18px;
+        line-height: 1.3;
+    }
+
+    .memorial-date {
+        font-size: 16px;
+        margin-top: 15px;
+    }
+
+    @keyframes mega-pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    .memorial-years {
+        font-size: 16px;
+        margin-top: 6px;
+    }
+
+    .memorial-card .hint {
+        font-size: 12px;
+        margin-top: 10px;
+    }
+
+    .number-img {
+        height: 2.5em;
+        margin: 0 1px;
+    }
+
+    .time-container {
+        gap: 6px;
+    }
+}
+
+.memorial-years {
+    font-size: 20px;
+    color: #FDB927;
+    margin-top: 10px;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(253, 185, 39, 0.8);
+    animation: glow 2s ease-in-out infinite;
 } 
